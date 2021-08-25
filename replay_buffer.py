@@ -28,7 +28,7 @@ class ReplayBuffer():
         max_memory = min(self.available_memory_counter, self.memory_size)
 
         # randomize memories
-        random_memories_batch = np.random.chouce(max_memory, batch_size)
+        random_memories_batch = np.random.choice(max_memory, batch_size)
 
         states = self.states_memory[random_memories_batch]
         new_states = self.new_states_memory[random_memories_batch]
