@@ -1,13 +1,13 @@
 import numpy as np
 
 class ReplayBuffer():
-    def __init__(self, max_memory_size, input_shape, n_actions):
+    def __init__(self, max_memory_size, input_shape, actions_num):
         self.memory_size = max_memory_size
         self.available_memory_counter = 0
         self.states_memory = np.zeros((self.memory_size, *input_shape))
         # states that result after taken actions
         self.new_states_memory = np.zeros((self.memory_size, *input_shape))
-        self.actions_memory = np.zeros((self.memory_size, n_actions))
+        self.actions_memory = np.zeros((self.memory_size, actions_num))
         # rewards are scalars so they don't need the other dim
         self.rewards_memory = np.zeros(self.memory_size)
         # done flags from env
