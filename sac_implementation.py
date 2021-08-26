@@ -79,7 +79,7 @@ class Agent():
         new_value = self.target_value_network(new_state).view(-1)
         new_value[done] = 0.0
 
-        # action values according to the new policy for value and actor networks
+        # action probability values according to the new policy for value and actor networks
         actions, log_probs = self.actor_network.sample_normal(state, reparametrize=False)
         log_probs = log_probs.view(-1)
         # Clipped Double Q-learning (reduce it to the minimum, avoiding overestimation):
@@ -89,9 +89,26 @@ class Agent():
         critic_value = T.min(new_policy_q_1, new_policy_q_2)
         critic_value = critic_value.view(-1)
 
+        # value network loss
         self.value_optimizer.zero_grad()
         value_target = critic_value - log_probs
         value_loss = 0.5 * F.mse_loss(value, value_target)
+        value_loss.backward(retain_graph=True)
+        self.value_network.optimizer.step()
+
+        # actor network loss
+        actions, log_probs = self.actor_network.sample_normal(state, reparametrize=True)
+        log_probs = log_probs.view(-1)
+        new_policy_q_1 = self.critic_network_1.forward(state, actions)
+        new_policy_q_2 = self.critic_network_2.forward(state, actions)
+        critic_value = T.min(new_policy_q_1, new_policy_q_2)
+        critic_value = critic_value.view(-1)
+
+        actor_loss = log_probs - critic_value
+        actor_loss = T.mean(actor_loss)
+        self.actor_network.optimizer.zero_grad()
+        actor_loss.backward(retain_graph=True)
+        self.actor_network.optimizer.step()
 
     def save_models(self):
         print("Saving models...")
