@@ -33,7 +33,7 @@ class Agent():
         self.update_network(tau=1)
 
     def choose_action(self, observation):
-        state = T.tensor([observation]).to(self.actor_network.device)
+        state = T.tensor([observation], dtype=T.float).to(self.actor_network.device)
         # feed the state forward to actor network to get the actions
         actions, _ = self.actor_network.sample_normal(state, reparametrize=False)
 
@@ -90,7 +90,7 @@ class Agent():
         critic_value = critic_value.view(-1)
 
         # value network loss
-        self.value_optimizer.zero_grad()
+        self.value_network.optimizer.zero_grad()
         value_target = critic_value - log_probs
         value_loss = 0.5 * F.mse_loss(value, value_target)
         value_loss.backward(retain_graph=True)
@@ -109,6 +109,24 @@ class Agent():
         self.actor_network.optimizer.zero_grad()
         actor_loss.backward(retain_graph=True)
         self.actor_network.optimizer.step()
+
+        #critic network loss
+        self.critic_network_1.optimizer.zero_grad()
+        self.critic_network_2.optimizer.zero_grad()
+        # scale factor includes the entropy
+        # new value of the state resulting from the actions the agent took
+        q_predicted = self.scale * reward + self.gamma * new_value
+        q1_old_policy = self.critic_network_1.forward(state, action).view(-1)
+        q2_old_policy = self.critic_network_2.forward(state, action).view(-1)
+        critic_1_loss = 0.5 * F.mse_loss(q1_old_policy, q_predicted)
+        critic_2_loss = 0.5 * F.mse_loss(q2_old_policy, q_predicted)
+
+        critic_loss = critic_1_loss + critic_2_loss
+        critic_loss.backward()
+        self.critic_network_1.optimizer.step()
+        self.critic_network_1.optimizer.step()
+
+        self.update_network()
 
     def save_models(self):
         print("Saving models...")

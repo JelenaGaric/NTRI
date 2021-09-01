@@ -1,3 +1,6 @@
 # Project exclude paths
 /venv/
+/venv1/
 .idea
+/tmp/
+/plots/

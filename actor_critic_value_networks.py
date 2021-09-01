@@ -49,9 +49,9 @@ class CriticNetwork(nn.Module):
 
 
 class ValueNetwork(nn.Module):
-    def __init(self, learning_rate, input_dims, layer1_size=256, layer2_size=256,
+    def __init__(self, learning_rate, input_dims, layer1_size=256, layer2_size=256,
                file_name='value_network', save_path='tmp/sac'):
-        super(ValueNetwork, self).__init()
+        super(ValueNetwork, self).__init__()
         self.input_dims = input_dims
         self.layer1_size = layer1_size
         self.layer2_size = layer2_size
@@ -100,9 +100,9 @@ class ActorNetwork(nn.Module):
         self.lower_sigma_bound = 1e-6
 
         self.layer1 = nn.Linear(*self.input_dims, self.layer1_dims)
-        self.layer1 = nn.Linear(*self.input_dims, self.layer1_dims)
-        # two outputs
-        # mu is mean of the policy distribution
+        self.layer2 = nn.Linear(self.layer1_dims, self.layer2_dims)
+        # mu - layer3 is mean of the policy distribution
+        # so there are two outputs
         self.layer3 = nn.Linear(self.layer2_dims, self.n_actions)
         # standard deviation
         self.sigma = nn.Linear(self.layer2_dims, self.n_actions)
@@ -119,7 +119,7 @@ class ActorNetwork(nn.Module):
         probability = F.relu(probability)
 
         mu = self.layer3(probability)
-        sigma = self.sigma(mu)
+        sigma = self.sigma(probability)
 
         # don't want broad distribution
         # sigma (standard deviation) defines how broad the distribution is
@@ -142,9 +142,11 @@ class ActorNetwork(nn.Module):
         action = T.tanh(actions)*T.tensor(self.max_action).to(self.device)
         # for calculating the loss function
         log_probs = policy_distribution.log_prob(actions)
-        # self.reparam_noise was added for situations like log(1-1)
-        log_probs -= T.log(1-action.pow(2)+self.reparam_noise)
+        # self.lower_sigma_bound was added for situations like log(1-1)
+        log_probs -= T.log(1-action.pow(2) + self.lower_sigma_bound)
         log_probs = log_probs.sum(1, keepdim=True)
+
+        return action, log_probs
 
     def save_checkpoint(self):
         T.save(self.state_dict(), self.save_path)
