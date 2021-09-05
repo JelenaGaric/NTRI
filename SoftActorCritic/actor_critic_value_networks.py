@@ -29,7 +29,7 @@ class CriticNetwork(nn.Module):
         self.optimizer = optim.Adam(self.parameters(), lr=learning_rate)
         # get the graphics card if possible
         self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
-
+        print(T.cuda.is_available())
         self.to(self.device)
 
     # feed forward state action pair through critic network
@@ -85,8 +85,8 @@ class ValueNetwork(nn.Module):
 
 
 class ActorNetwork(nn.Module):
-    def __init__(self, learning_rate, input_dims, max_action, layer1_dims=256, layer2_dims=256,
-                 actions_num=2, file_name='actor_network', save_path='tmp/sac'):
+    def __init__(self, learning_rate, input_dims, max_action, actions_num, layer1_dims=256, layer2_dims=256,
+                 file_name='actor_network', save_path='tmp/sac'):
         super(ActorNetwork, self).__init__()
         self.input_dims = input_dims
         self.max_action = max_action

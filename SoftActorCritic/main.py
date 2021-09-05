@@ -8,12 +8,12 @@ from utils import plot_learning_curve
 
 if __name__ == '__main__':
     # environment = gym.make('InvertedPendulumBulletEnv-v0') BipedalWalker-v3 LunarLander-v2
-    environment = gym.make('BipedalWalker-v3')
+    environment = gym.make('AntBulletEnv-v0')
     agent = Agent(input_dims=environment.observation_space.shape, env=environment,
                   actions_num=environment.action_space.shape[0])
-    games_num = 300
-    filename = 'inverted_pendulum.png'
-    figure_file = 'plots/'+filename
+    games_num = 30000
+    filename = 'sac.png'
+    figure_file = '../plots/'+filename
 
     best_score = environment.reward_range[0]
     score_history = []
@@ -22,8 +22,7 @@ if __name__ == '__main__':
     if load_checkpoint:
         agent.load_models()
         environment.render(mode='human')
-    env = wrappers.Monitor(environment, "tmp/lunar-lander-sac",
-                             video_callable=lambda episode_id: True, force=True)
+    # env = wrappers.Monitor(environment, "tmp/monitor-sac", video_callable=lambda episode_id: True, force=True)
     for i in range(games_num):
         #environment.render()
 
@@ -47,7 +46,7 @@ if __name__ == '__main__':
             if not load_checkpoint:
                 agent.save_models()
 
-        print('episode ', i, ' score %.1f' % score, ' avg_score %.1f', avg_score)
+        print('episode ', i, ' score %.1f' % score, ' avg_score %.1f' % avg_score)
 
     environment.close()
 

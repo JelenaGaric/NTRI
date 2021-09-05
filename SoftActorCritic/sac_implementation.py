@@ -9,8 +9,8 @@ from actor_critic_value_networks import ActorNetwork, CriticNetwork, ValueNetwor
 # reward scaling depends on num of actions
 
 class Agent():
-    def __init__(self, lr_alpha=0.0003, lr_beta=0.0003, input_dims=[8], env=None, gamma=0.99, tau = 0.005,
-                 actions_num=2, max_memory_size=1000000, layer1_size=256, layer2_size=256, batch_size=256, reward_scale=2):
+    def __init__(self, actions_num, lr_alpha=0.0003, lr_beta=0.0003, input_dims=[8], env=None, gamma=0.99, tau=0.005,
+                 max_memory_size=1000000, layer1_size=256, layer2_size=256, batch_size=256, reward_scale=2):
         self.gamma = gamma
         # for parameters of target value network
         self.tau = tau
@@ -62,6 +62,7 @@ class Agent():
         self.target_value_network.load_state_dict(value_state_dict)
 
     def learn(self):
+        #if batch is not filled yet
         if self.memory.available_memory_counter < self.batch_size:
             return
         state, action, reward, new_state, done = self.memory.sample_buffer(self.batch_size)
@@ -113,7 +114,6 @@ class Agent():
         #critic network loss
         self.critic_network_1.optimizer.zero_grad()
         self.critic_network_2.optimizer.zero_grad()
-        # scale factor includes the entropy
         # new value of the state resulting from the actions the agent took
         q_predicted = self.scale * reward + self.gamma * new_value
         q1_old_policy = self.critic_network_1.forward(state, action).view(-1)
