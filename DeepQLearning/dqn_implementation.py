@@ -1,7 +1,4 @@
 import torch as T
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
 import numpy as np
 from DeepQLearning.deep_q_network import DeepQNetwork
 
@@ -68,15 +65,18 @@ class Agent():
 
         self.Q_eval.optimizer.zero_grad()
 
-        # values of the actions the agent took
+        # value of the action the agent took
         q_value = self.Q_eval.forward(state_batch)[batch_index, action_batch]
+        # all q values of the next possible actions
         q_next = self.Q_eval.forward(new_states_batch)
         q_next[terminal_batch] = 0.0
 
         # the one we want to achieve
         # zeroth element is the value
+        # we want to go in the direction of max q in the next state
         q_target = reward_batch + self.gamma * T.max(q_next, dim=1)[0]
 
+        # so the loss is between the actual q_value we took and the q_target in which direction we want to move
         loss = self.Q_eval.loss(q_target, q_value).to(self.Q_eval.device)
         loss.backward()
         self.Q_eval.optimizer.step()

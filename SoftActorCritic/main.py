@@ -7,11 +7,12 @@ from sac_implementation import Agent
 from utils import plot_learning_curve
 
 if __name__ == '__main__':
-    # environment = gym.make('InvertedPendulumBulletEnv-v0') BipedalWalker-v3 LunarLander-v2
+    # environment = gym.make('InvertedPendulumBulletEnv-v0') AntBulletEnv-v0 BipedalWalker-v3
     environment = gym.make('AntBulletEnv-v0')
     agent = Agent(input_dims=environment.observation_space.shape, env=environment,
                   actions_num=environment.action_space.shape[0])
-    games_num = 30000
+
+    games_num = 3000
     filename = 'sac.png'
     figure_file = '../plots/'+filename
 

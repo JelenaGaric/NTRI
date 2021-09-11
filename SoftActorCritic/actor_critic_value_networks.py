@@ -10,7 +10,7 @@ import numpy as np
 # learning rate = beta
 class CriticNetwork(nn.Module):
     def __init__(self, learning_rate, input_dims, actions_num, layer1_size=256, layer2_size=256,
-                 file_name='critic_network', save_path='tmp/sac'):
+                 file_name='critic_network', save_path='../tmp/sac'):
         super(CriticNetwork, self).__init__()
         self.input_dims = input_dims
         self.layer1_size = layer1_size
@@ -50,7 +50,7 @@ class CriticNetwork(nn.Module):
 
 class ValueNetwork(nn.Module):
     def __init__(self, learning_rate, input_dims, layer1_size=256, layer2_size=256,
-               file_name='value_network', save_path='tmp/sac'):
+               file_name='value_network', save_path='../tmp/sac'):
         super(ValueNetwork, self).__init__()
         self.input_dims = input_dims
         self.layer1_size = layer1_size
@@ -86,7 +86,7 @@ class ValueNetwork(nn.Module):
 
 class ActorNetwork(nn.Module):
     def __init__(self, learning_rate, input_dims, max_action, actions_num, layer1_dims=256, layer2_dims=256,
-                 file_name='actor_network', save_path='tmp/sac'):
+                 file_name='actor_network', save_path='../tmp/sac'):
         super(ActorNetwork, self).__init__()
         self.input_dims = input_dims
         self.max_action = max_action

@@ -74,7 +74,7 @@ class Agent():
         done = T.tensor(done).to(self.actor_network.device)
         action = T.tensor(action, dtype=T.float).to(self.actor_network.device)
 
-        #calculate the value and target value of states and new states
+        # calculate the value and target value of states and new states
         # returns view of tensor minus one dim because it's a scalar
         value = self.value_network(state).view(-1)
         new_value = self.target_value_network(new_state).view(-1)
