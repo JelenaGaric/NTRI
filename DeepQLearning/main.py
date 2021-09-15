@@ -15,8 +15,6 @@ if __name__ == '__main__':
     n_games = 500
 
     for i in range(n_games):
-        #environment.render()
-
         score = 0
         done = False
         observation = environment.reset()

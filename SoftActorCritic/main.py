@@ -12,7 +12,7 @@ if __name__ == '__main__':
     agent = Agent(input_dims=environment.observation_space.shape, env=environment,
                   actions_num=environment.action_space.shape[0])
 
-    games_num = 3000
+    games_num = 30000
     filename = 'sac.png'
     figure_file = '../plots/'+filename
 
@@ -23,9 +23,9 @@ if __name__ == '__main__':
     if load_checkpoint:
         agent.load_models()
         environment.render(mode='human')
-    # env = wrappers.Monitor(environment, "tmp/monitor-sac", video_callable=lambda episode_id: True, force=True)
+
     for i in range(games_num):
-        #environment.render()
+        environment.render()
 
         observation = environment.reset()
         done = False

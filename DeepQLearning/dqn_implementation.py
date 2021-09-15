@@ -44,7 +44,8 @@ class Agent():
         self.memory_counter += 1
 
     def choose_action(self, observation):
-        # only in 1-epsilon cases will the agent explore
+        # in 1-epsilon cases will the agent exploit and choose
+        # max q value action
         if np.random.random() > self.epsilon:
             state = T.tensor([observation]).to(self.Q_eval.device)
             actions = self.Q_eval.forward(state)

@@ -115,11 +115,11 @@ class Agent():
         self.critic_network_1.optimizer.zero_grad()
         self.critic_network_2.optimizer.zero_grad()
         # new value of the state resulting from the actions the agent took
-        q_predicted = self.scale * reward + self.gamma * new_value
+        q_target = self.scale * reward + self.gamma * new_value
         q1_old_policy = self.critic_network_1.forward(state, action).view(-1)
         q2_old_policy = self.critic_network_2.forward(state, action).view(-1)
-        critic_1_loss = 0.5 * F.mse_loss(q1_old_policy, q_predicted)
-        critic_2_loss = 0.5 * F.mse_loss(q2_old_policy, q_predicted)
+        critic_1_loss = 0.5 * F.mse_loss(q1_old_policy, q_target)
+        critic_2_loss = 0.5 * F.mse_loss(q2_old_policy, q_target)
 
         critic_loss = critic_1_loss + critic_2_loss
         critic_loss.backward()
