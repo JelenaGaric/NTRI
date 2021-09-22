@@ -130,12 +130,12 @@ class ActorNetwork(nn.Module):
         return mu, sigma
 
     # Gaussian policy distribution - continuous space
-    def sample_normal(self, state, reparametrize=True):
+    def sample_normal(self, state, reparameterize=True):
         mu, sigma = self.forward(state)
         # normal distribution of probabilities to take each action
         policy_distribution = Normal(mu, sigma)
 
-        if reparametrize:
+        if reparameterize:
             actions = policy_distribution.rsample()
         else:
             actions = policy_distribution.sample()

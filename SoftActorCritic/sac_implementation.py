@@ -33,9 +33,9 @@ class Agent():
         self.update_network(tau=1)
 
     def choose_action(self, observation):
-        state = T.tensor([observation], dtype=T.float).to(self.actor_network.device)
+        state = T.tensor([observation]).to(self.actor_network.device)
         # feed the state forward to actor network to get the actions
-        actions, _ = self.actor_network.sample_normal(state, reparametrize=False)
+        actions, _ = self.actor_network.sample_normal(state, reparameterize=False)
 
         # because of torch, send it to cpu and detach form the graph and turn it to numpy and take the zeroth element
         return actions.cpu().detach().numpy()[0]
@@ -81,7 +81,7 @@ class Agent():
         new_value[done] = 0.0
 
         # action probability values according to the new policy for value and actor networks
-        actions, log_probs = self.actor_network.sample_normal(state, reparametrize=False)
+        actions, log_probs = self.actor_network.sample_normal(state, reparameterize=False)
         log_probs = log_probs.view(-1)
         # Clipped Double Q-learning (reduce it to the minimum, avoiding overestimation):
         new_policy_q_1 = self.critic_network_1.forward(state, actions)
@@ -98,7 +98,7 @@ class Agent():
         self.value_network.optimizer.step()
 
         # actor network loss
-        actions, log_probs = self.actor_network.sample_normal(state, reparametrize=True)
+        actions, log_probs = self.actor_network.sample_normal(state, reparameterize=True)
         log_probs = log_probs.view(-1)
         new_policy_q_1 = self.critic_network_1.forward(state, actions)
         new_policy_q_2 = self.critic_network_2.forward(state, actions)
