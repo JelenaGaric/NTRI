@@ -33,7 +33,7 @@ class Agent():
         self.update_network(tau=1)
 
     def choose_action(self, observation):
-        state = T.tensor([observation]).to(self.actor_network.device)
+        state = T.Tensor([observation]).to(self.actor_network.device)
         # feed the state forward to actor network to get the actions
         actions, _ = self.actor_network.sample_normal(state, reparameterize=False)
 
