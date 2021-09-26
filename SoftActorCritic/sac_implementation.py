@@ -124,7 +124,7 @@ class Agent():
         critic_loss = critic_1_loss + critic_2_loss
         critic_loss.backward()
         self.critic_network_1.optimizer.step()
-        self.critic_network_1.optimizer.step()
+        self.critic_network_2.optimizer.step()
 
         self.update_network()
 
