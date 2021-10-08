@@ -3,8 +3,10 @@ A project in reinforcement learning done for a collage course. Two RL algorithms
 
 
 
-SAC:
+SAC
+
 Algorithm:
+
 ![image](https://lilianweng.github.io/lil-log/assets/images/SAC_algo.png)
 
 
