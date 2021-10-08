@@ -18,3 +18,7 @@ x-axis: episode number
 
 ![image](https://live.staticflickr.com/65535/51567022435_876b7afc83_z.jpg)
 
+sample step:
+
+https://user-images.githubusercontent.com/34127280/136623889-eb802a43-06e6-406b-b0f7-7ba118e8a4a3.mp4
+
