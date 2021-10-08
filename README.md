@@ -8,7 +8,7 @@ Algorithm:
 ![image](https://lilianweng.github.io/lil-log/assets/images/SAC_algo.png)
 
 
-Results on AntBulletEnv-v0 environment 
+Results on AntBulletEnv-v0 environment:
 
 y-axis: score
 
