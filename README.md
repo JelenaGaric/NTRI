@@ -7,6 +7,10 @@ SAC:
 Algorithm:
 ![image](https://lilianweng.github.io/lil-log/assets/images/SAC_algo.png)
 
+
 Results on AntBulletEnv-v0 environment 
+y-axis: score
+x-axis: episode number
+
 ![image](https://live.staticflickr.com/65535/51567022435_876b7afc83_z.jpg)
 
