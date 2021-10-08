@@ -5,6 +5,7 @@ DQN
 
 Algorithm:
 
+![image](https://miro.medium.com/max/1098/1*4B46Bc9EDUdwrnqhAUp7hQ.png)
 
 Results on LunarLander-v2:
 
