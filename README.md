@@ -1,6 +1,19 @@
 # NTRI
 A project in reinforcement learning done for a collage course. Two RL algorithms will be compared - Soft actor critic (policy optimization) and Deep Q Network (Q-Learning).
 
+DQN
+
+Algorithm:
+
+
+Results on LunarLander-v2:
+
+y0-axis: epsilon (exploration factor)
+
+y1-axis: score
+
+![image](https://user-images.githubusercontent.com/34127280/136624562-7af54479-84cf-40d8-9a43-cd3043c5b126.png)
+
 
 
 SAC
