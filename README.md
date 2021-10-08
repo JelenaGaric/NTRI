@@ -9,7 +9,9 @@ Algorithm:
 
 
 Results on AntBulletEnv-v0 environment 
+
 y-axis: score
+
 x-axis: episode number
 
 ![image](https://live.staticflickr.com/65535/51567022435_876b7afc83_z.jpg)
